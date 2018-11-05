@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.log
+haters/
+videos/
+.next/
+.build/
+layout.md
+variables.env
+Advanced-React-c73d23f-1of2/
+Advanced-React-c73d23f-2of2/
