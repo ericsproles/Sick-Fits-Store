@@ -24,13 +24,14 @@ const TOGGLE_CART_MUTATION = gql`
   }
 `;
 
-const Composed = adopt({
-  user: <User />,
-  toggleCart: <Mutation mutation={TOGGLE_CART_MUTATION} />,
-  localState: <Query query={LOCAL_STATE_QUERY} />,
-});
+// const Composed = adopt({
+//   user: <User />,
+//   toggleCart: <Mutation mutation={TOGGLE_CART_MUTATION} />,
+//   localState: <Query query={LOCAL_STATE_QUERY} />,
+// });
 
 const Cart = () => (
+  // TODO: Use Composed to clean up nest mess
   <User>
     {({ data: { me } }) => {
       if (!me) return null;
