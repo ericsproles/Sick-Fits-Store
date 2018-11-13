@@ -31,7 +31,6 @@ const Composed = adopt({
 });
 
 const Cart = () => (
-  // TODO: Use React Composed to handle this nested mess
   <User>
     {({ data: { me } }) => {
       if (!me) return null;
