@@ -41,14 +41,14 @@ class SingleItem extends Component {
       <Query
         query={SINGLE_ITEM_QUERY}
         variables={{
-          id: this.props.id
+          id: this.props.id,
         }}
       >
         {({ error, loading, data }) => {
           if (error) return <Error error={error} />;
-          if (loading) return <p> Loading...</p>;
+          if (loading) return <p>Loading...</p>;
           if (!data.item) return <p> No item found for {this.props.id} </p>;
-          console.log(data);
+          // console.log(data);
           const item = data.item;
           return (
             <SingleItemStyles>
@@ -56,7 +56,7 @@ class SingleItem extends Component {
                 <title> Sick Fits | {item.title} </title>
               </Head>
               <img src={item.largeImage} alt={item.title} />
-              <div className='details'>
+              <div className="details">
                 <h2>Viewing {item.title}</h2>
                 <p>{item.description}</p>
               </div>
@@ -69,3 +69,4 @@ class SingleItem extends Component {
 }
 
 export default SingleItem;
+export { SINGLE_ITEM_QUERY };

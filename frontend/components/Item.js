@@ -8,10 +8,13 @@ import formatMoney from '../lib/formatMoney';
 import DeleteItem from './DeleteItem';
 import AddToCart from './AddToCart';
 
-class Item extends Component {
+export default class Item extends Component {
+  static propTypes = {
+    item: PropTypes.object.isRequired,
+  };
+
   render() {
     const { item } = this.props;
-    // console.log(item);
     return (
       <ItemStyles>
         {item.image && <img src={item.image} alt={item.title} />}
@@ -39,15 +42,9 @@ class Item extends Component {
             <a>Edit ✏️</a>
           </Link>
           <AddToCart id={item.id} />
-          <DeleteItem id={item.id}>Delete this item</DeleteItem>
+          <DeleteItem id={item.id}>Delete This Item</DeleteItem>
         </div>
       </ItemStyles>
     );
   }
 }
-
-Item.propTypes = {
-  item: PropTypes.object.isRequired,
-};
-
-export default Item;
