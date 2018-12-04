@@ -23,6 +23,7 @@ describe('<Order/>', () => {
     wrapper.update();
     console.log(wrapper.debug());
     const order = wrapper.find('div[data-test="order"]');
+    const orderTotal = wrapper.find('span');
     expect(toJSON(order)).toMatchSnapshot();
   });
 });
