@@ -1,15 +1,15 @@
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+import wait from 'waait';
 import SingleItem, { SINGLE_ITEM_QUERY } from '../components/SingleItem';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { fakeItem } from '../lib/testUtils';
-import wait from 'waait';
 
 describe('<SingleItem/>', () => {
-  it('should render with proper data', async () => {
+  it('renders with proper data', async () => {
     const mocks = [
       {
-        // when someone makes a request with this query and variable combo:
+        // when someone makes a request with this query and variable combo
         request: { query: SINGLE_ITEM_QUERY, variables: { id: '123' } },
         // return this fake data (mocked data)
         result: {
@@ -24,7 +24,7 @@ describe('<SingleItem/>', () => {
         <SingleItem id="123" />
       </MockedProvider>
     );
-    expect(wrapper.text()).toBe('Loading...');
+    expect(wrapper.text()).toContain('Loading...');
     await wait();
     wrapper.update();
     // console.log(wrapper.debug());
@@ -33,13 +33,12 @@ describe('<SingleItem/>', () => {
     expect(toJSON(wrapper.find('p'))).toMatchSnapshot();
   });
 
-  it('should error with a not found item', async () => {
+  it('Errors with a not found item', async () => {
     const mocks = [
       {
         request: { query: SINGLE_ITEM_QUERY, variables: { id: '123' } },
-        // return this fake data (mocked data)
         result: {
-          errors: [{ message: 'Item Not Found!!' }],
+          errors: [{ message: 'Items Not Found!' }],
         },
       },
     ];
@@ -50,10 +49,9 @@ describe('<SingleItem/>', () => {
     );
     await wait();
     wrapper.update();
-    // console.log(wrapper.debug());
+    console.log(wrapper.debug());
     const item = wrapper.find('[data-test="graphql-error"]');
-    // console.log(item.debug());
-    expect(item.text()).toContain('Item Not Found!!');
+    expect(item.text()).toContain('Items Not Found!');
     expect(toJSON(item)).toMatchSnapshot();
   });
 });

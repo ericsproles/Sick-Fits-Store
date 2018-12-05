@@ -29,24 +29,19 @@ class Signin extends Component {
       <Mutation
         mutation={SIGNIN_MUTATION}
         variables={this.state}
-        refetchQueries={[
-          {
-            query: CURRENT_USER_QUERY,
-          },
-        ]}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
-        {(signin, { error, loading }) => (
+        {(signup, { error, loading }) => (
           <Form
             method="post"
             onSubmit={async e => {
               e.preventDefault();
-              const res = await signin();
-              console.log(res);
+              await signup();
               this.setState({ name: '', email: '', password: '' });
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Sign In</h2>
+              <h2>Sign into your account</h2>
               <Error error={error} />
               <label htmlFor="email">
                 Email
@@ -68,7 +63,8 @@ class Signin extends Component {
                   onChange={this.saveToState}
                 />
               </label>
-              <button type="submit">Sign In</button>
+
+              <button type="submit">Sign In!</button>
             </fieldset>
           </Form>
         )}

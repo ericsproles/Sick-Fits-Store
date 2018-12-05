@@ -1,16 +1,16 @@
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
+import wait from 'waait';
+import toJSON from 'enzyme-to-json';
+import Router from 'next/router';
 import Pagination, { PAGINATION_QUERY } from '../components/Pagination';
 import { MockedProvider } from 'react-apollo/test-utils';
-import wait from 'waait';
-import Router from 'next/router';
-import toJSON from 'enzyme-to-json';
-import { signedInMocks, notSignedInMocks } from './PleaseSignIn.test';
+
 Router.router = {
   push() {},
   prefetch() {},
 };
 
-function makeMocksfor(length) {
+function makeMocksFor(length) {
   return [
     {
       request: { query: PAGINATION_QUERY },
@@ -29,21 +29,19 @@ function makeMocksfor(length) {
   ];
 }
 
-describe('<Pagination />', () => {
-  it('should display a loading message', () => {
+describe('<Pagination/>', () => {
+  it('displays a loading message', () => {
     const wrapper = mount(
-      <MockedProvider mocks={makeMocksfor(1)}>
+      <MockedProvider mocks={makeMocksFor(1)}>
         <Pagination page={1} />
       </MockedProvider>
     );
-    const pagination = wrapper.find('[data-test="pagination"]');
-    // console.log(wrapper.debug());
     expect(wrapper.text()).toContain('Loading...');
   });
 
-  it('should render pagination for 18 items', async () => {
+  it('renders pagination for 18 items', async () => {
     const wrapper = mount(
-      <MockedProvider mocks={makeMocksfor(18)}>
+      <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={1} />
       </MockedProvider>
     );
@@ -51,13 +49,12 @@ describe('<Pagination />', () => {
     wrapper.update();
     expect(wrapper.find('.totalPages').text()).toEqual('5');
     const pagination = wrapper.find('div[data-test="pagination"]');
-    expect(toJSON(pagination)).toMatchSnapshot;
-    // console.log(wrapper.debug());
+    expect(toJSON(pagination)).toMatchSnapshot();
   });
 
-  it('should disable prev button on first page', async () => {
+  it('disables prev button on first page', async () => {
     const wrapper = mount(
-      <MockedProvider mocks={makeMocksfor(18)}>
+      <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={1} />
       </MockedProvider>
     );
@@ -66,10 +63,9 @@ describe('<Pagination />', () => {
     expect(wrapper.find('a.prev').prop('aria-disabled')).toEqual(true);
     expect(wrapper.find('a.next').prop('aria-disabled')).toEqual(false);
   });
-
-  it('should disable next button on last page', async () => {
+  it('disables next button on last page', async () => {
     const wrapper = mount(
-      <MockedProvider mocks={makeMocksfor(18)}>
+      <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={5} />
       </MockedProvider>
     );
@@ -78,10 +74,9 @@ describe('<Pagination />', () => {
     expect(wrapper.find('a.prev').prop('aria-disabled')).toEqual(false);
     expect(wrapper.find('a.next').prop('aria-disabled')).toEqual(true);
   });
-
-  it('should enable all buttons on middle page', async () => {
+  it('enables all buttons on a middle page', async () => {
     const wrapper = mount(
-      <MockedProvider mocks={makeMocksfor(18)}>
+      <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={3} />
       </MockedProvider>
     );

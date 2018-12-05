@@ -36,7 +36,6 @@ class Items extends Component {
     return (
       <Center>
         <Pagination page={this.props.page} />
-        <p>Items</p>
         <Query
           query={ALL_ITEMS_QUERY}
           // fetchPolicy="network-only"
@@ -46,14 +45,9 @@ class Items extends Component {
         >
           {({ data, error, loading }) => {
             if (loading) return <p>Loading...</p>;
-            if (error) return <p>Erorr: {error.messgae}</p>;
-            //console.log(data, loading, error);
+            if (error) return <p>Error: {error.message}</p>;
             return (
-              <ItemsList>
-                {data.items.map(item => (
-                  <Item item={item} key={item.id} />
-                ))}
-              </ItemsList>
+              <ItemsList>{data.items.map(item => <Item item={item} key={item.id} />)}</ItemsList>
             );
           }}
         </Query>

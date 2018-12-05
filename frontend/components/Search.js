@@ -8,17 +8,10 @@ import { DropDown, DropDownItem, SearchStyles } from './styles/DropDown';
 
 const SEARCH_ITEMS_QUERY = gql`
   query SEARCH_ITEMS_QUERY($searchTerm: String!) {
-    items(
-      where: {
-        OR: [
-          { title_contains: $searchTerm }
-          { description_contains: $searchTerm }
-        ]
-      }
-    ) {
+    items(where: { OR: [{ title_contains: $searchTerm }, { description_contains: $searchTerm }] }) {
       id
-      title
       image
+      title
     }
   }
 `;
@@ -30,7 +23,6 @@ function routeToItem(item) {
       id: item.id,
     },
   });
-  console.log(item);
 }
 
 class AutoComplete extends React.Component {
@@ -39,15 +31,14 @@ class AutoComplete extends React.Component {
     loading: false,
   };
   onChange = debounce(async (e, client) => {
-    console.log('searching..');
+    console.log('Searching...');
     // turn loading on
     this.setState({ loading: true });
-    // manually query apollo client
+    // Manually query apollo client
     const res = await client.query({
       query: SEARCH_ITEMS_QUERY,
       variables: { searchTerm: e.target.value },
     });
-    console.log(res);
     this.setState({
       items: res.data.items,
       loading: false,
@@ -57,24 +48,15 @@ class AutoComplete extends React.Component {
     resetIdCounter();
     return (
       <SearchStyles>
-        <Downshift
-          onChange={routeToItem}
-          itemToString={item => (item === null ? '' : item.title)}
-        >
-          {({
-            getInputProps,
-            getItemProps,
-            isOpen,
-            inputValue,
-            highlightedIndex,
-          }) => (
+        <Downshift onChange={routeToItem} itemToString={item => (item === null ? '' : item.title)}>
+          {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }) => (
             <div>
               <ApolloConsumer>
                 {client => (
                   <input
                     {...getInputProps({
                       type: 'search',
-                      placeholder: 'Search for an item',
+                      placeholder: 'Search For An Item',
                       id: 'search',
                       className: this.state.loading ? 'loading' : '',
                       onChange: e => {
@@ -97,9 +79,8 @@ class AutoComplete extends React.Component {
                       {item.title}
                     </DropDownItem>
                   ))}
-                  {!this.state.items.length && !this.state.loading && (
-                    <DropDownItem>Nothing found for {inputValue}</DropDownItem>
-                  )}
+                  {!this.state.items.length &&
+                    !this.state.loading && <DropDownItem> Nothing Found {inputValue}</DropDownItem>}
                 </DropDown>
               )}
             </div>

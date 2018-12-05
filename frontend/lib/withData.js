@@ -14,7 +14,7 @@ function createClient({ headers }) {
         headers,
       });
     },
-    // local state
+    // local data
     clientState: {
       resolvers: {
         Mutation: {

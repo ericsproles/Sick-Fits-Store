@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TakeMyMoney> should render and match snapshot 1`] = `
+exports[`<TakeMyMoney/> renders and matches snapshot 1`] = `
 <ReactStripeCheckout
   ComponentClass="span"
   amount={15000}
@@ -13,7 +13,7 @@ exports[`<TakeMyMoney> should render and match snapshot 1`] = `
   locale="auto"
   name="Sick Fits"
   reconfigureOnUpdate={false}
-  stripeKey="pk_test_PNihNO0pN8zkP5S1E6F69x1T"
+  stripeKey="pk_test_Vtknn6vSdcZWSG2JWvEiWSqC"
   token={[Function]}
   triggerEvent="onClick"
 >

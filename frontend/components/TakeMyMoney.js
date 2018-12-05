@@ -38,7 +38,6 @@ class TakeMyMoney extends React.Component {
     }).catch(err => {
       alert(err.message);
     });
-    // console.log(order);
     Router.push({
       pathname: '/order',
       query: { id: order.data.createOrder.id },
@@ -59,10 +58,8 @@ class TakeMyMoney extends React.Component {
                   amount={calcTotalPrice(me.cart)}
                   name="Sick Fits"
                   description={`Order of ${totalItems(me.cart)} items!`}
-                  image={
-                    me.cart.length && me.cart[0].item && me.cart[0].item.image
-                  }
-                  stripeKey="pk_test_PNihNO0pN8zkP5S1E6F69x1T"
+                  image={me.cart.length && me.cart[0].item && me.cart[0].item.image}
+                  stripeKey="pk_test_Vtknn6vSdcZWSG2JWvEiWSqC"
                   currency="USD"
                   email={me.email}
                   token={res => this.onToken(res, createOrder)}

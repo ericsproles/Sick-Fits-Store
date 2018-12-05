@@ -11,9 +11,9 @@ const AnimationStyles = styled.span`
     transition: all 0.4s;
     backface-visibility: hidden;
   }
-  /* Initial state of entered Dot */
+  /* Initial State of the entered Dot */
   .count-enter {
-    transform: scale(3) rotateX(0.5turn);
+    transform: scale(4) rotateX(0.5turn);
   }
   .count-enter-active {
     transform: rotateX(0);
@@ -24,7 +24,7 @@ const AnimationStyles = styled.span`
     transform: rotateX(0);
   }
   .count-exit-active {
-    transform: scale(3) rotateX(0.5turn);
+    transform: scale(4) rotateX(0.5turn);
   }
 `;
 
@@ -57,4 +57,7 @@ const CartCount = ({ count }) => (
   </AnimationStyles>
 );
 
+CartCount.propTypes = {
+  count: PropTypes.number.isRequired,
+};
 export default CartCount;

@@ -34,7 +34,6 @@ const SINGLE_ITEM_QUERY = gql`
     }
   }
 `;
-
 class SingleItem extends Component {
   render() {
     return (
@@ -47,13 +46,12 @@ class SingleItem extends Component {
         {({ error, loading, data }) => {
           if (error) return <Error error={error} />;
           if (loading) return <p>Loading...</p>;
-          if (!data.item) return <p> No item found for {this.props.id} </p>;
-          // console.log(data);
+          if (!data.item) return <p>No Item Found for {this.props.id}</p>;
           const item = data.item;
           return (
             <SingleItemStyles>
               <Head>
-                <title> Sick Fits | {item.title} </title>
+                <title>Sick Fits | {item.title}</title>
               </Head>
               <img src={item.largeImage} alt={item.title} />
               <div className="details">

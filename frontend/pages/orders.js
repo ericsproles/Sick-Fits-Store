@@ -1,7 +1,7 @@
 import PleaseSignIn from '../components/PleaseSignIn';
 import OrderList from '../components/OrderList';
 
-const OrderListPage = props => (
+const OrderPage = props => (
   <div>
     <PleaseSignIn>
       <OrderList />
@@ -9,4 +9,4 @@ const OrderListPage = props => (
   </div>
 );
 
-export default OrderListPage;
+export default OrderPage;

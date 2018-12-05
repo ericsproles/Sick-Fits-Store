@@ -1,11 +1,24 @@
-import { shallow, mount } from 'enzyme';
-import Nav from '../components/Nav';
-import { CURRENT_USER_QUERY } from '../components/User';
-import { MockedProvider } from 'react-apollo/test-utils';
-import wait from 'waait';
-import toJSON from 'enzyme-to-json';
-import { fakeUser, fakeCartItem } from '../lib/testUtils';
-import { signedInMocks, notSignedInMocks } from './PleaseSignIn.test';
+import { mount } from "enzyme";
+import wait from "waait";
+import toJSON from "enzyme-to-json";
+import Nav from "../components/Nav";
+import { CURRENT_USER_QUERY } from "../components/User";
+import { MockedProvider } from "react-apollo/test-utils";
+import { fakeUser, fakeCartItem } from "../lib/testUtils";
+
+const notSignedInMocks = [
+  {
+    request: { query: CURRENT_USER_QUERY },
+    result: { data: { me: null } }
+  }
+];
+
+const signedInMocks = [
+  {
+    request: { query: CURRENT_USER_QUERY },
+    result: { data: { me: fakeUser() } }
+  }
+];
 
 const signedInMocksWithCartItems = [
   {
@@ -14,15 +27,15 @@ const signedInMocksWithCartItems = [
       data: {
         me: {
           ...fakeUser(),
-          cart: [fakeCartItem({ quantity: 1 }), fakeCartItem()],
-        },
-      },
-    },
-  },
+          cart: [fakeCartItem(), fakeCartItem(), fakeCartItem()]
+        }
+      }
+    }
+  }
 ];
 
-describe('<Nav/>', () => {
-  it('should render a minimal nav when signed out', async () => {
+describe("<Nav/>", () => {
+  it("renders a minimal nav when signed out", async () => {
     const wrapper = mount(
       <MockedProvider mocks={notSignedInMocks}>
         <Nav />
@@ -32,11 +45,10 @@ describe('<Nav/>', () => {
     wrapper.update();
     // console.log(wrapper.debug());
     const nav = wrapper.find('ul[data-test="nav"]');
-    // console.log(nav.debug());
     expect(toJSON(nav)).toMatchSnapshot();
   });
 
-  it('should render full nav bar when signed in', async () => {
+  it("renders full nav when signed in", async () => {
     const wrapper = mount(
       <MockedProvider mocks={signedInMocks}>
         <Nav />
@@ -45,12 +57,11 @@ describe('<Nav/>', () => {
     await wait();
     wrapper.update();
     const nav = wrapper.find('ul[data-test="nav"]');
-    // console.log(nav.debug());
     expect(nav.children().length).toBe(6);
-    expect(nav.text()).toContain('Sign out');
+    expect(nav.text()).toContain("Sign Out");
   });
 
-  it('should render the amount of items in the cart', async () => {
+  it("renders the amount of items in the cart", async () => {
     const wrapper = mount(
       <MockedProvider mocks={signedInMocksWithCartItems}>
         <Nav />
@@ -59,9 +70,7 @@ describe('<Nav/>', () => {
     await wait();
     wrapper.update();
     const nav = wrapper.find('[data-test="nav"]');
-    const count = nav.find('div.count');
-    // console.log(nav.debug());
-    // console.log(count.debug());
+    const count = nav.find("div.count");
     expect(toJSON(count)).toMatchSnapshot();
   });
 });

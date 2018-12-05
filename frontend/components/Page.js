@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import styled, { ThemeProvider, injectGlobal } from 'styled-components';
 import Header from './Header';
 import Meta from './Meta';
-import styled, { ThemeProvider, injectGlobal } from 'styled-components';
-import { inject } from 'async';
 
 const theme = {
   red: '#FF0000',
@@ -28,8 +27,7 @@ const Inner = styled.div`
 injectGlobal`
   @font-face {
     font-family: 'radnika_next';
-    src: url('/static/radnikanext-medium-webfont.woff2')
-    format('woff2');
+    src: url('/static/radnikanext-medium-webfont.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
   }
@@ -51,6 +49,7 @@ injectGlobal`
     text-decoration: none;
     color: ${theme.black};
   }
+  button {  font-family: 'radnika_next'; }
 `;
 
 class Page extends Component {

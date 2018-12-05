@@ -6,11 +6,7 @@ import Error from './ErrorMessage';
 import { CURRENT_USER_QUERY } from './User';
 
 const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
-    $email: String!
-    $name: String!
-    $password: String!
-  ) {
+  mutation SIGNUP_MUTATION($email: String!, $name: String!, $password: String!) {
     signup(email: $email, name: $name, password: $password) {
       id
       email
@@ -21,8 +17,8 @@ const SIGNUP_MUTATION = gql`
 
 class Signup extends Component {
   state = {
-    email: '',
     name: '',
+    email: '',
     password: '',
   };
   saveToState = e => {
@@ -40,8 +36,7 @@ class Signup extends Component {
             method="post"
             onSubmit={async e => {
               e.preventDefault();
-              const res = await signup();
-              // console.log(res);
+              await signup();
               this.setState({ name: '', email: '', password: '' });
             }}
           >
