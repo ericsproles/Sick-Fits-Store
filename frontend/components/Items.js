@@ -25,7 +25,7 @@ const Center = styled.div`
 
 const ItemsList = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 60px;
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
@@ -47,7 +47,11 @@ class Items extends Component {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
             return (
-              <ItemsList>{data.items.map(item => <Item item={item} key={item.id} />)}</ItemsList>
+              <ItemsList>
+                {data.items.map(item => (
+                  <Item item={item} key={item.id} />
+                ))}
+              </ItemsList>
             );
           }}
         </Query>
