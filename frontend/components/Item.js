@@ -7,6 +7,7 @@ import PriceTag from './styles/PriceTag';
 import formatMoney from '../lib/formatMoney';
 import DeleteItem from './DeleteItem';
 import AddToCart from './AddToCart';
+import User from './User';
 
 export default class Item extends Component {
   static propTypes = {
@@ -16,35 +17,45 @@ export default class Item extends Component {
   render() {
     const { item } = this.props;
     return (
-      <ItemStyles>
-        {item.image && <img src={item.image} alt={item.title} />}
+      <User>
+        {({ data: { me } }) => (
+          <ItemStyles>
+            {item.image && <img src={item.image} alt={item.title} />}
 
-        <Title>
-          <Link
-            href={{
-              pathname: '/item',
-              query: { id: item.id },
-            }}
-          >
-            <a>{item.title}</a>
-          </Link>
-        </Title>
-        <PriceTag>{formatMoney(item.price)}</PriceTag>
-        <p>{item.description}</p>
+            <Title>
+              <Link
+                href={{
+                  pathname: '/item',
+                  query: { id: item.id },
+                }}
+              >
+                <a>{item.title}</a>
+              </Link>
+            </Title>
+            <PriceTag>{formatMoney(item.price)}</PriceTag>
+            <p>{item.description}</p>
+            {me ? (
+              <div className="buttonList">
+                <Link
+                  href={{
+                    pathname: 'update',
+                    query: { id: item.id },
+                  }}
+                >
+                  <a>Edit ✏️</a>
+                </Link>
+                <DeleteItem id={item.id}>Delete</DeleteItem>
 
-        <div className="buttonList">
-          <Link
-            href={{
-              pathname: 'update',
-              query: { id: item.id },
-            }}
-          >
-            <a>Edit ✏️</a>
-          </Link>
-          <AddToCart id={item.id} />
-          <DeleteItem id={item.id}>Delete</DeleteItem>
-        </div>
-      </ItemStyles>
+                <AddToCart id={item.id} />
+              </div>
+            ) : (
+              <div className="signedOutButtonList">
+                <AddToCart />
+              </div>
+            )}
+          </ItemStyles>
+        )}
+      </User>
     );
   }
 }

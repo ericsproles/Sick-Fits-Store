@@ -35,6 +35,21 @@ const Item = styled.div`
       padding: 1rem;
     }
   }
+  .signedOutButtonList {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    border-top: 1px solid ${props => props.theme.lightgrey};
+    grid-gap: 1px;
+    background: ${props => props.theme.lightgrey};
+    & > * {
+      background: white;
+      border: 0;
+      font-family: 'radnika_next';
+      font-size: 1rem;
+      padding: 1rem;
+    }
+  }
 `;
 
 export default Item;
