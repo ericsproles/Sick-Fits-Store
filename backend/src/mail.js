@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT,
+  secure: false,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
@@ -20,7 +21,7 @@ const makeANiceEmail = text => `
     <h2>Hello There!</h2>
     <p>${text}</p>
 
-    <p>😘, Wes Bos</p>
+    <p>😘, Eric Sproles</p>
   </div>
 `;
 

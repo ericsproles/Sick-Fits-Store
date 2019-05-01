@@ -18,43 +18,47 @@ export default class Item extends Component {
     const { item } = this.props;
     return (
       <User>
-        {({ data: { me } }) => (
-          <ItemStyles>
-            {item.image && <img src={item.image} alt={item.title} />}
+        {({ data }) => {
+          const me = data ? data.me : null;
+          return (
+            <ItemStyles>
+              {item.image && <img src={item.image} alt={item.title} />}
 
-            <Title>
-              <Link
-                href={{
-                  pathname: '/item',
-                  query: { id: item.id },
-                }}
-              >
-                <a>{item.title}</a>
-              </Link>
-            </Title>
-            <PriceTag>{formatMoney(item.price)}</PriceTag>
-            <p>{item.description}</p>
-            {me ? (
-              <div className="buttonList">
+              <Title>
                 <Link
                   href={{
-                    pathname: 'update',
+                    pathname: '/item',
                     query: { id: item.id },
                   }}
                 >
-                  <a>Edit ✏️</a>
+                  <a>{item.title}</a>
                 </Link>
-                <DeleteItem id={item.id}>Delete</DeleteItem>
-
-                <AddToCart id={item.id} />
-              </div>
-            ) : (
-              <div className="signedOutButtonList">
-                <AddToCart />
-              </div>
-            )}
-          </ItemStyles>
-        )}
+              </Title>
+              <PriceTag>{formatMoney(item.price)}</PriceTag>
+              <p>{item.description}</p>
+              {/* If a user is signed in, show edit, delete, and add to cart */}
+              {me && (
+                <div className="buttonList">
+                  <Link
+                    href={{
+                      pathname: 'update',
+                      query: { id: item.id },
+                    }}
+                  >
+                    <a>Edit ✏️</a>
+                  </Link>
+                  <AddToCart id={item.id} />
+                  <DeleteItem id={item.id}>Delete This Item</DeleteItem>
+                </div>
+              )}
+              {!me && (
+                <div className="signedOutButtonList">
+                  <AddToCart id={item.id} />
+                </div>
+              )}
+            </ItemStyles>
+          );
+        }}
       </User>
     );
   }
