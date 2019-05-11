@@ -4,6 +4,7 @@ import { ApolloProvider } from 'react-apollo';
 import withData from '../lib/withData';
 
 class MyApp extends App {
+  // This runs first, every page that we have it will crawl the page for query's or mutation's that need to be fetched. They are all fired off and resolved before we render the page. Crawls pages, fetches data, and returns it.
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
     if (Component.getInitialProps) {

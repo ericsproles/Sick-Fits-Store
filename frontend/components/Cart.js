@@ -23,10 +23,14 @@ const TOGGLE_CART_MUTATION = gql`
     toggleCart @client
   }
 `;
+
 /* eslint-disable */
+// Composed allows us to put all variables we need into <Composed /> to avoid many nested render prop functions
 const Composed = adopt({
   user: ({ render }) => <User>{render}</User>,
-  toggleCart: ({ render }) => <Mutation mutation={TOGGLE_CART_MUTATION}>{render}</Mutation>,
+  toggleCart: ({ render }) => (
+    <Mutation mutation={TOGGLE_CART_MUTATION}>{render}</Mutation>
+  ),
   localState: ({ render }) => <Query query={LOCAL_STATE_QUERY}>{render}</Query>,
 });
 /* eslint-enable */
@@ -34,6 +38,7 @@ const Composed = adopt({
 const Cart = () => (
   <Composed>
     {({ user, toggleCart, localState }) => {
+      //console.log(user);
       const me = user.data.me;
       if (!me) return null;
       return (
@@ -44,15 +49,20 @@ const Cart = () => (
             </CloseButton>
             <Supreme>{me.name}'s Cart</Supreme>
             <p>
-              You Have {me.cart.length} Item{me.cart.length === 1 ? '' : 's'} in your cart.
+              You Have {me.cart.length} Item{me.cart.length === 1 ? '' : 's'} in
+              your cart.
             </p>
           </header>
-          <ul>{me.cart.map(cartItem => <CartItem key={cartItem.id} cartItem={cartItem} />)}</ul>
+          <ul>
+            {me.cart.map(cartItem => (
+              <CartItem key={cartItem.id} cartItem={cartItem} />
+            ))}
+          </ul>
           <footer>
-            <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+            <p>Subtotal: {formatMoney(calcTotalPrice(me.cart))}</p>
             {me.cart.length && (
               <TakeMyMoney>
-                <SickButton>Checkout</SickButton>
+                <SickButton onClick={toggleCart}>Checkout</SickButton>
               </TakeMyMoney>
             )}
           </footer>

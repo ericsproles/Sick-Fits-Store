@@ -6,13 +6,19 @@ const NavStyles = styled.ul`
   display: flex;
   justify-self: end;
   font-size: 2rem;
+  a.small {
+    font-size: 0.7em;
+    padding: 0 5px;
+  }
+  a.line-2 {
+    padding: 0 5px;
+  }
   a,
   button {
     padding: 1rem 3rem;
     display: flex;
     align-items: center;
     position: relative;
-    text-transform: uppercase;
     font-weight: 900;
     font-size: 1em;
     background: none;

@@ -7,6 +7,7 @@ const { hasPermission } = require('../utils');
 const stripe = require('../stripe');
 
 const Mutations = {
+  // CREATE A NEW ITEM -------------------------------
   async createItem(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -31,6 +32,8 @@ const Mutations = {
 
     return item;
   },
+
+  // UPDATE AN ITEM -----------------------------------
   updateItem(parent, args, ctx, info) {
     // first take a copy of the updates
     const updates = { ...args };
@@ -47,6 +50,8 @@ const Mutations = {
       info
     );
   },
+
+  // DELETE AN ITEM -----------------------------------
   async deleteItem(parent, args, ctx, info) {
     const where = { id: args.id };
     // 1. find the item
@@ -64,6 +69,8 @@ const Mutations = {
     // 3. Delete it!
     return ctx.db.mutation.deleteItem({ where }, info);
   },
+
+  // SIGN UP ------------------------------------------------
   async signup(parent, args, ctx, info) {
     // lowercase their email
     args.email = args.email.toLowerCase();
@@ -90,6 +97,8 @@ const Mutations = {
     // Finalllllly we return the user to the browser
     return user;
   },
+
+  // SIGN IN ------------------------------------------------
   async signin(parent, { email, password }, ctx, info) {
     // 1. check if there is a user with that email
     const user = await ctx.db.query.user({ where: { email } });
@@ -111,10 +120,14 @@ const Mutations = {
     // 5. Return the user
     return user;
   },
+
+  // SIGN OUT OF CURRENT USER ---------------------------------
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
   },
+
+  // REQUEST A PASSWORD RESET -----------------------------------
   async requestReset(parent, args, ctx, info) {
     // 1. Check if this is a real user
     const user = await ctx.db.query.user({ where: { email: args.email } });
@@ -144,6 +157,8 @@ const Mutations = {
     // 4. Return the message
     return { message: 'Thanks!' };
   },
+
+  // RESET USER PASSWORD ---------------------------------------
   async resetPassword(parent, args, ctx, info) {
     // 1. check if the passwords match
     if (args.password !== args.confirmPassword) {
@@ -181,6 +196,8 @@ const Mutations = {
     // 8. return the new user
     return updatedUser;
   },
+
+  // UPDATE USER PERMISSIONS ----------------------------------------
   async updatePermissions(parent, args, ctx, info) {
     // 1. Check if they are logged in
     if (!ctx.request.userId) {
@@ -212,11 +229,12 @@ const Mutations = {
       info
     );
   },
+
+  // ADD ITEM TO USER'S CART ----------------------------------------------
   async addToCart(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     console.log('userId:', userId);
-    console.log('no user! userId:', userId);
     if (ctx.request.userId === undefined) {
       throw new Error(`You must be signed in!`);
     }
@@ -253,8 +271,12 @@ const Mutations = {
       info
     );
   },
+
+  // REMOVE ITEM FROM USER'S CART ---------------------------------------
   async removeFromCart(parent, args, ctx, info) {
     // 1. Find the cart item
+    console.log('ctx.request.user:', ctx.request.user);
+    console.log('args:', args);
     const cartItem = await ctx.db.query.cartItem(
       {
         where: {
@@ -277,6 +299,8 @@ const Mutations = {
       info
     );
   },
+
+  // CREATE AN ORDER -------------------------------------------------
   async createOrder(parent, args, ctx, info) {
     // 1. Query the current user and make sure they are signed in
     const { userId } = ctx.request;
@@ -300,6 +324,7 @@ const Mutations = {
       0
     );
     console.log(`Going to charge for a total of ${amount}`);
+    console.log('debugging:', args.token);
     // 3. Create the stripe charge (turn token into $$$)
     const charge = await stripe.charges.create({
       amount,
@@ -308,7 +333,9 @@ const Mutations = {
     });
     // 4. Convert the CartItems to OrderItems
     const orderItems = user.cart.map(cartItem => {
+      // take copy of all fields, connect the user, delete the ID and return it
       const orderItem = {
+        // cartItem has relationship to Item, which has all the details
         ...cartItem.item,
         quantity: cartItem.quantity,
         user: { connect: { id: userId } },
@@ -320,6 +347,7 @@ const Mutations = {
     // 5. create the Order
     const order = await ctx.db.mutation.createOrder({
       data: {
+        // fields that come back from Stripe
         total: charge.amount,
         charge: charge.id,
         items: { create: orderItems },
